@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Leave System</title>
+    <link rel="stylesheet" href="stylesheet/ash.css">
+    <script src="javascript/drb.js" defer></script>
+</head>
+
+<body spellcheck="false" onload="checkInUserMainPage()">
+    <form id="form0">
+
+        <div class="inputs" style="margin-top: 0;">
+            <h1>Hostel Leave </h1>
+            <p>SATHYABAMA UNIVERSITY</p>
+        </div>
+
+        <div class="space" style="width: 1px; height: 30px;"></div>
+
+        <div class="inputs">
+            <input type="text" name="Id" id="txtName" required>
+            <label class="txt">Name</label>
+            <span></span>
+        </div>
+
+        <div class="inputs">
+            <input type="text" name="Id" id="txtHostelID" required>
+            <label class="txt">Hostel Id</label>
+            <span></span>
+        </div>
+
+        <div class="radios" style="margin-top: 65px;">
+            <label style="position: absolute; top: -25px;">Purpose</label>
+            <input type="radio" name="Purpose" id="home" value="Home" checked>
+            <label class="rad" for="home" onclick="hideOtherPurpose(this);">Home</label>
+            <input type="radio" name="Purpose" id="shop" value="Shop">
+            <label class="rad" for="shop" onclick="hideOtherPurpose(this);">Shop</label>
+            <input type="radio" name="Purpose" id="health" value="Health">
+            <label class="rad" for="health" onclick="hideOtherPurpose(this);">Health</label>
+            <input type="radio" name="Purpose" id="health" value="Gym">
+            <label class="rad" for="health" onclick="hideOtherPurpose(this);">Gym</label>
+            <input type="radio" name="Purpose" id="Other" value="Other">
+            <label class="rad" for="Other" onclick="showOtherPurpose();">Other</label>
+        </div>
+
+        <div class="inputs" id="otherPurpose">
+            <input type="text" name="OthersPurpose" maxlength="50" id="otherPurposeInput">
+            <label class="txt">Other Purpose</label>
+            <span></span>
+        </div>
+
+        <div class="inputs">
+            <input type="date" id="txtDateFROM" required>
+            <label class="txt">Leave on Date</label>
+            <span></span>
+        </div>
+        <div class="inputs">
+            <input type="date" id="txtDateTO" required>
+            <label class="txt">Return on Date</label>
+            <span></span>
+        </div>
+
+
+        <div class="inputs" id="addr">
+            <textarea name="Address" id="txtAddress" maxlength="120" required></textarea>
+            <label class="txt">Address During Leave</label>
+            <span></span>
+        </div>
+
+
+        <div class="inputs" style="margin-top: 60px;">
+            <button style="display: none;cursor: pointer;" id="submit">Request</button>
+            <label for="submit" style="cursor: pointer;" id="subLabel">Request</label>
+        </div>
+
+    </form>
+    <div class="space" style="width: 1px; height: 30px;"></div>
+    <div class="alertBox" onclick="removeAlert(this);">
+
+        <h2 id="heading">For 7+ Leaves</h2>
+        <p id="alertBody">You Must Submit Application</p>
+        <label>+</label>
+    </div>
+
+    <script>
+        let gender = "";
+        var todayDate = new Date().toJSON().slice(0, 10);
+        document.getElementById("txtDateFROM").value = todayDate;
+        /* Druba Code */
+        fetch("API/getLeavePageData.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                phone: localStorage.getItem("usernameRAW")
+            })
+        }).then(res => {
+            if (!res.ok) console.error("No Access to the API");
+            else return res.json();
+        }).then(data => {
+            data = data[0];
+            if (data == 0) console.warn("No Data for this user");
+            else {
+                txtHostelID.value = data[0].hostel_id;
+                txtName.value = data[0].name;
+                txtAddress.value = data[0].address;
+                gender = data[0].gender;
+            }
+        }).catch(err => {
+            console.error("Error in code : " + err);
+        });
+
+        document.getElementById("form0").addEventListener("submit", (e) => {
+            e.preventDefault();
+            /* Data Extract */
+            let purpose = document.querySelectorAll("input[name='Purpose']");
+            let purposeText = "Not Specified";
+            purpose.forEach(item => {
+                if (item.checked) {
+                    if (item.value != "Other")
+                        purposeText = item.value;
+                    else if (item.value == "Other") {
+                        purposeText = document.getElementById("otherPurposeInput").value;
+                    } else {
+                        purposeText = "Not Specified";
+                    }
+                }
+            });
+            /* Data Extract End */
+
+            /* Send Application Request */
+            fetch("API/sendRequest.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    phone: localStorage.getItem("usernameRAW"),
+                    name: document.getElementById("txtName").value,
+                    hostel_id: document.getElementById("txtHostelID").value,
+                    d_from: document.getElementById("txtDateFROM").value,
+                    d_to: document.getElementById("txtDateTO").value,
+                    address: document.getElementById("txtAddress").value,
+                    gender: gender,
+                    reason: purposeText
+                })
+            }).then(res => {
+                if (!res.ok) console.error("No Access to the API");
+                else return res.text();
+            }).then(data => {
+                alert(data)
+                window.location.href = "main.html";
+            }).catch(err => {
+                console.error("Error in code : " + err);
+            });
+
+        });
+
+
+        /* Ashim Code */
+        "use strict";
+
+        let dayRange = document.getElementById('days');
+        let uploadSection = document.getElementById('upload');
+        let application = document.getElementById('application');
+        let addrss = document.getElementById('addr');
+        let radioClicked = false;
+
+        document.getElementById("txtDateFROM").setAttribute("min", (new Date(new Date().getTime())
+            .toISOString().split('T')[0]));
+        document.getElementById("txtDateTO").setAttribute("min", (new Date(new Date().getTime() + 86400000)
+            .toISOString().split('T')[0]));
+
+
+        document.getElementsByClassName('alertBox')[0].onclick = function () {
+            console.log('ok')
+            removeAlert(document.getElementsByClassName('alertBox')[0]);
+
+        }
+
+        function pushAlert(heading, body, color) {
+
+            let alertBox = document.getElementsByClassName('alertBox')[0];
+            let alertHeading = document.getElementById('heading');
+            let alertBody = document.getElementById('alertBody');
+
+            alertHeading.innerText = heading;
+            alertBody.innerText = body;
+
+            alertBox.style.backgroundColor = color;
+            alertBox.style.display = "block";
+
+            setTimeout(() => {
+                alertBox.style.opacity = 1;
+            }, 100)
+
+            setTimeout(() => {
+                removeAlert(alertBox);
+            }, 4000)
+        }
+
+        function removeAlert(alertBox) {
+
+            alertBox.style.opacity = 0;
+
+            setTimeout(() => {
+                alertBox.style.display = "none";
+            }, 800)
+        }
+
+        function hideOtherPurpose(ele) {
+            radioClicked = true;
+            document.getElementById('otherPurposeInput').value = ele.textContent;
+            document.getElementById('otherPurpose').style.display = 'none';
+        }
+
+        function showOtherPurpose() {
+            radioClicked = true;
+            document.getElementById('otherPurposeInput').value = '';
+            document.getElementById('otherPurpose').style.display = 'block';
+            pushAlert("Other Purpose", "Should be described", "rgb(218, 25, 25)");
+        }
+    </script>
+</body>
+
+
+</html>

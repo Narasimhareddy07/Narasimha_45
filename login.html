@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Leave System</title>
+    <link rel="stylesheet" href="stylesheet/v1.css">
+    <script src="javascript/drb.js" defer></script>
+    <script src="javascript/v1.js" defer></script>
+</head>
+
+<body onload="checkEnUser()" class="login">
+    <h1>Hostel Leave System</h1>
+
+    <br>
+    <form id="form-dp" class="form">
+        <label for="txtUser">Phone Number : </label>
+        <input type="tel" id="txtUser" class="txt" oninput="checkNumber(this)" maxlength="10"  />
+        <label for="txtPass">Password : </label>
+        <input type="password" id="txtPass" class="txt"  />
+        <button onclick="reDirect('main.html')">Login</button>
+    </form>
+    <br><br>
+    <a href="signup.html">Signup as a new student</a>
+    <br>
+    <a href="admin/">Login as Admin</a>
+</body>
+
+</html>

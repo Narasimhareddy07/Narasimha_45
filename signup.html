@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Leave System</title>
+    <link rel="stylesheet" href="stylesheet/v1.css">
+    <script src="javascript/drb.js" defer></script>
+    <script src="javascript/v1.js" defer></script>
+</head>
+
+<body onload="checkEnUser()" class="login">
+    <h1>Hostel Leave System</h1>
+    <p>Fill up your details to sign up</p>
+    <br>
+    <form id="form-signup" class="form">
+        <label for="txtName">Name : </label>
+        <input type="text" id="txtName" class="txt" oninput="checkNormal(this)" autocomplete="off" maxlength="120"/>
+
+        <label for="txtUser">Phone Number : </label>
+        <input type="tel" id="txtUser" class="txt" oninput="checkNumber(this)" maxlength="10" />
+
+        <label for="txtHostelID">Hostel ID : </label>
+        <input type="tel" id="txtHostelID" class="txt" oninput="checkNumber(this)" maxlength="10" />
+
+        <label for="txtAddress">Address : </label>
+        <input type="text" id="txtAddress" class="txt" oninput="checkNormal(this)" maxlength="255" />
+
+        <label for="txtGender">Gender : </label>
+        <select class="txt selectBox" id="txtGender">
+            <option value="0" selected disabled>-- Gender --</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="others">Others</option>
+
+        </select>
+
+        <label for="txtPass">Password : </label>
+        <input type="password" id="txtPass" class="txt" autocomplete="off" required />
+        <small style="color: #ff0202;">Please Remember the password,<br> because you cannot change the password.</small>
+        <br>
+        <button type="submit">Sign Up</button>
+    </form>
+    <br><br>
+    <a href="login.html">Login Instead</a>
+
+    <script>
+        document.getElementById("form-signup").addEventListener('submit', (e) => {
+            e.preventDefault();
+            fetch("API/userAdd.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    "phone": elem('txtUser').value,
+                    "name": elem("txtName").value,
+                    "address": elem("txtAddress").value,
+                    "gender": elem("txtGender").value,
+                    "hostel_id": elem("txtHostelID").value,
+                    "pass": elem("txtPass").value
+                })
+            }).then(res => {
+                if (!res.ok) {
+                    console.error("Cannot find the API :" + res.text());
+                } else {
+                    return res.text();
+                }
+            }).then(data => {
+                if (data[0] != "!") {
+                    alert(data);
+                    reDirect("login.html");
+                } else {
+                    alert(data);
+                }
+            }).catch(err => {
+                console.log("There was an internal error : " + err);
+            })
+        });
+    </script>
+</body>
+
+</html>

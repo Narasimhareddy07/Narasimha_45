@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Leave System</title>
+    <link rel="stylesheet" href="stylesheet/v1.css">
+    <script src="javascript/drb.js" defer></script>
+</head>
+
+<body onload="checkInUserMainPage()" class="dashboard">
+
+    <main>
+        <small>Welcome</small>
+        <h1 id="txtName">YOUR NAME</h1>
+        <div class="grid">
+            <span>
+                <label for="txtPhone">Phone : </label>
+                <h3 id="txtPhone">+91 XXXXXXXXXX</h3>
+            </span>
+            <span>
+                <label for="txtAddress">Address : </label>
+                <h3 id="txtAddress">Andhra Pradesh</h3>
+            </span>
+            <span>
+                <label for="txtGender">Gender : </label>
+                <h3 id="txtGender">XXX</h3>
+            </span>
+             <span>
+                <label for="txtHostelID">Email : </label>
+                <h3 id="txtHostelID">naraxxx@gmail.com</h3>
+             </span>
+             <br>
+            <span>
+                <label for="txtHostelID">Hostel ID : </label>
+                <h3 id="txtHostelID">000000000</h3>
+            </span>
+            <span>
+                <label for="txtHostelID">Register Number : </label>
+                <h3 id="txtHostelID">XXXX</h3>
+            </span>
+            <span>
+                <label for="txtHostelID">Room Number : </label>
+                <h3 id="txtHostelID">XX</h3>
+            </span>
+        </div>
+    </main>
+
+    <section class="container" id="reqContainer">
+    </section>
+
+    <div class="buttonCTN">
+        <button onclick="reDirect('requestLeave.html')">Request a leave</button>
+        <button onclick="logoutFromHere()" class="btn-red">Logout</button>
+    </div>
+
+    <script>
+        const deleteRequest = (idR) => {
+            if (confirm('Are you sure you want to remove?')) {
+                fetch("API/deleteRequest.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            id: idR,
+                        }),
+                    })
+                    .then((res) => {
+                        if (!res.ok) {
+                            console.log("API url not found !");
+                        } else {
+                            return res.text();
+                        }
+                    })
+                    .then((data) => {
+                        alert(data);
+                        window.location.reload();
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                    });
+
+            }
+
+        };
+
+        let fetchLeaveRequests = () => {
+            fetch('API/getRequests.php', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    phone: localStorage.getItem("usernameRAW"),
+                }),
+            }).then(res => {
+                if (!res.ok) console.error("There was an error : " + res.text());
+                else return res.json();
+            }).then(data => {
+                if (data[0] != 0) {
+                    let dispalyTemplate = `
+                    <h2 class="reqText">Requests : </h2>
+                    `;
+                    data.forEach(item => {
+                        let drb_status = "";
+                        dispalyTemplate += `
+                        <div class="request">
+                            <span>
+                                <label for="txtIssueDate">ID : </label>
+                                <h3 id="txtIssueDate">${item.id}</h3>
+                            </span>
+                            <span>
+                                <label for="txtIssueDate">Issue Date : </label>
+                                <h3 id="txtIssueDate">${item.issue_date}</h3>
+                            </span>
+                            <span>
+                                <label for="txtDate">Date : </label>
+                                <h3 id="txtDate">${item.d_from} to ${item.d_to}</h3>
+                            </span>
+                            <span>
+                                <label for="txtPurpose">Purpose : </label>
+                                <h3 id="txtPurpose">${item.purpose}</h3>
+                            </span>
+                            <span>
+                                <label for="txtStatus">Status : </label>
+                                <h3 id="txtStatus" class="
+                        `;
+                        if (item.status == 0) {
+                            drb_status = "Pending";
+                            dispalyTemplate += `txt-warning`;
+                        } else if (item.status > 0) {
+                            drb_status = "Approved";
+                            dispalyTemplate += `txt-success`;
+                        } else if (item.status < 0) {
+                            drb_status = "Declined";
+                            dispalyTemplate += `txt-danger`;
+                        }
+                        dispalyTemplate +=
+                            `   ">${drb_status}</h3>
+                            </span>
+                            <span>
+                                <h3 id="btnAction" onclick="deleteRequest(${item.id})" class="btn_link">
+                                    Remove Request
+                                </h3>
+                            </span>
+                        </div>
+                        `;
+                    });
+                    document.getElementById("reqContainer").innerHTML = dispalyTemplate;
+                }
+            }).catch(err => {
+                console.error("There was a problem in the Code : " + err);
+            });
+        };
+
+        (async () => {
+
+            /* Fetching Student Details */
+
+            await fetch('API/getUserDetails.php', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    phone: localStorage.getItem("usernameRAW"),
+                }),
+            }).then(res => {
+                if (!res.ok) console.error("There was an error : " + res.text());
+                else return res.json();
+            }).then(data => {
+                if (data[0] == 0) {
+                    alert("Credentials are wrong. Please login again.");
+                    logoutFromHere();
+                } else {
+                    data = data[0][0];
+                    elem("txtName").innerHTML = data.name;
+                    elem("txtPhone").innerHTML = "+91 " + data.phone;
+                    elem("txtAddress").innerHTML = data.address;
+                    elem("txtGender").innerHTML = data.gender;
+                    elem("txtHostelID").innerHTML = data.hostel_id;
+                }
+            }).catch(err => {
+                console.error("There was a problem in the Code : " + err);
+            });
+
+
+            /* Fetching Leave Requests */
+            await fetchLeaveRequests();
+        })();
+
+        setInterval(() => {
+            fetchLeaveRequests();
+        }, 3000);
+
+    </script>
+</body>
+
+</html>
