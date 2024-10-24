@@ -1,0 +1,391 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+
+    height: 100vh;
+    background: rgb(27, 27, 27);
+    display: grid;
+    place-items: center;
+    color: rgb(240, 234, 234);
+}
+
+form {
+
+    width: 85%;
+    max-width: 400px;
+    background: rgba(77, 94, 78, 0.158);
+    aspect-ratio: 1/1.5;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.24);
+    margin: 50px;
+    padding: 50px 0;
+}
+
+form .inputs {
+
+    margin-top: 40px;
+    width: 80%;
+    min-height: 45px;
+    height: max-content;
+    position: relative;
+}
+
+form .inputs.hidden {
+
+    transition: 500ms;
+    opacity: 0;
+    display: none;
+}
+
+form .inputs input,
+textarea {
+
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    padding: 0 8%;
+    background: none;
+    color: rgb(240, 234, 234);
+    font-size: 100%;
+}
+
+
+form .inputs label.txt {
+
+    position: absolute;
+    color: rgb(236, 236, 236);
+    top: 50%;
+    left: 0;
+    transition: 500ms;
+    transform: translateY(-50%);
+    z-index: -1;
+}
+
+form .inputs span {
+
+    position: absolute;
+    display: inline;
+    width: 100%;
+    height: 100%;
+    left: 50%;
+    left: 0;
+    bottom: 0;
+    background-image: linear-gradient(90deg, rgb(25, 218, 176)50%, rgb(18, 107, 223));
+    transition: 500ms;
+    background-size: 100% 3px;
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    z-index: -2;
+}
+
+.inputs input:focus~label,
+.inputs input:valid~label {
+
+    transform: translateY(-170%) scale(0.85) translateX(-10%);
+    color: rgb(172, 172, 172);
+}
+
+.inputs input:focus~span,
+.inputs input:valid~span {
+
+    background-size: 500% 3px;
+    background-position: bottom left;
+}
+
+.inputs textarea:focus~label,
+.inputs textarea:valid~label {
+
+    transform: translateY(-250%) scale(0.85) translateX(-10%);
+    color: rgb(172, 172, 172);
+}
+
+.inputs textarea:focus~span,
+.inputs textarea:valid~span {
+
+    background-size: 500% 3px;
+    background-position: bottom left;
+}
+
+.inputs textarea:focus,
+.inputs textarea:valid {
+
+    height: 130px;
+    padding-top: 40px;
+}
+
+textarea {
+
+    /* background-image: linear-gradient(rgba(0, 0, 0, 0.164), rgba(0, 0, 0, 0.1)); */
+    height: 48px;
+    transition: 500ms;
+}
+
+input[type="radio"] {
+
+    appearance: none;
+    display: none;
+}
+
+.radios {
+
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.radios label.rad {
+
+    padding: 10px 30px;
+    font-size: 100%;
+    font-weight: 400;
+    color: white;
+    z-index: 1;
+    box-shadow: inset 0 0 0 2px rgb(88, 88, 88);
+    cursor: pointer;
+    background: transparent;
+    transition: 200ms;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.date {
+
+    width: 80%;
+}
+
+#otherPurpose {
+
+    display: none;
+}
+
+input[type="date"]::-webkit-datetime-edit-year-field:not([aria-valuenow]),
+input[type="date"]::-webkit-datetime-edit-month-field:not([aria-valuenow]),
+input[type="date"]::-webkit-datetime-edit-day-field:not([aria-valuenow]) {
+    color: transparent;
+}
+
+input[type=date]:required:invalid::-webkit-datetime-edit {
+    color: transparent;
+}
+
+input[type=date]:focus::-webkit-datetime-edit {
+    color: rgb(251, 7, 7) !important;
+}
+
+form .inputs label.rad.upload {
+
+    position: relative;
+    margin-top: 10px;
+}
+
+input[type="radio"]:checked+label {
+
+    background: rgb(22, 129, 201);
+    box-shadow: none;
+}
+
+#daysDisplay {
+
+    position: absolute;
+    left: 92%;
+    top: 85%;
+    font-size: 130%;
+    font-weight: 500;
+}
+
+#uploaded {
+
+    position: absolute;
+    right: -45px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #04AA6D;
+    background: rgb(22, 22, 22);
+    width: 25px;
+    height: 25px;
+    display: grid;
+    place-items: center;
+    border-radius: 50px;
+    transition: 500ms;
+    opacity: 0;
+}
+
+.fileName {
+
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+input[type="file"] {
+
+    display: none;
+}
+
+#uploadApp {
+
+
+    font-size: 110%;
+}
+
+#subLabel {
+
+    background-image: linear-gradient(90deg, rgb(19, 158, 128), rgb(1, 81, 185));
+    box-shadow: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.247);
+    padding: 10px 20px;
+}
+
+
+.alertBox {
+
+    position: fixed;
+    width: 80%;
+    max-width: 300px;
+    background: rgb(206, 13, 13);
+    border-radius: 10px;
+    padding: 30px 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.548);
+    transition: 500ms;
+    display: none;
+    opacity: 0;
+}
+
+.alertBox label {
+
+    position: absolute;
+    font-size: 2rem;
+    top: 0px;
+    right: 10px;
+    transform: rotate(45deg);
+    cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+input[type="range"] {
+    -webkit-appearance: none;
+    /* Override default CSS styles */
+    appearance: none;
+    width: 100%;
+    /* Full-width */
+    height: 25px;
+    /* Specified height */
+    background: #d3d3d3;
+    /* Grey background */
+    outline: none;
+    /* Remove outline */
+    opacity: 1;
+    /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s;
+    /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+    transform: translateX(-8%);
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    /* Override default look */
+    appearance: none;
+    width: 25px;
+    /* Set a specific slider handle width */
+    height: 25px;
+    /* Slider handle height */
+    background: #04AA6D;
+    /* Green background */
+    cursor: pointer;
+    /* Cursor on hover */
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 25px;
+    /* Set a specific slider handle width */
+    height: 25px;
+    /* Slider handle height */
+    background: #04AA6D;
+    /* Green background */
+    cursor: pointer;
+    /* Cursor on hover */
+}
+
+input[type='range']::-webkit-slider-runnable-track {
+    height: 10px;
+    -webkit-appearance: none;
+    color: #13bba4;
+    margin-top: -1px;
+}
+
+input[type='range']::-webkit-slider-thumb {
+    width: 20px;
+    -webkit-appearance: none;
+    height: 40px;
+    cursor: pointer;
+    background: #505050;
+    transform: translateY(-15px);
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.411);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    background-image: linear-gradient(90deg, rgb(25, 218, 176), rgb(0, 110, 255));
+}
+
+
+input[type=range]::-ms-track {
+    width: 100%;
+    height: 8.4px;
+    cursor: pointer;
+}
+
+input[type=range]::-ms-fill-lower {
+    background: #2a6495;
+    border: 0.2px solid #010101;
+    border-radius: 2.6px;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+input[type=range]:focus::-ms-fill-lower {
+    background: #3071a9;
+}
+
+input[type=range]::-ms-fill-upper {
+    background: #3071a9;
+    border: 0.2px solid #010101;
+    border-radius: 2.6px;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+input[type=range]:focus::-ms-fill-upper {
+    background: #367ebd;
+}
