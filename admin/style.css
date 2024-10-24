@@ -1,0 +1,221 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #e4e4e4;
+}
+
+body {
+  background: #342e3d;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 10px 5%;
+  background: #292036;
+  font-size: 1rem;
+}
+
+.btn {
+  font-weight: 600;
+  display: inline-block;
+  text-align: center;
+  padding: .8rem 1.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: 200ms;
+  font-size: 0.9rem;
+  margin-right: 1rem;
+}
+
+.counts .btns{
+  display: flex;
+  justify-content: stretch;
+  align-items: center;
+}
+.counts .btns .btn{
+  width: 100%;
+}
+
+.dtxt {
+  border-radius: 4pt;
+  padding: 0.8rem 1rem !important;
+}
+
+.btn:hover {
+  filter: brightness(110%);
+}
+
+.red {
+  background: #d43333;
+}
+
+.blue {
+  background: #5050cc;
+}
+
+.green {
+  background: rgb(50, 170, 50);
+}
+
+.block {
+  width: 100%;
+  font-size: 1rem;
+}
+
+.block p {
+  color: #8b8b8b;
+}
+
+.block h1 {
+  font-weight: 500;
+}
+
+.counts {
+  margin: 0 5%;
+  border-bottom: 1px solid rgb(80, 80, 80);
+}
+
+.counts .container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 150px;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.search {
+  display: flex;
+  padding: 0 5%;
+  align-items: center;
+  height: 80px;
+}
+
+.search label {
+  margin-right: 10px;
+}
+
+
+.search .btn {
+  margin-left: 10px;
+  padding: .6rem 1rem;
+  border-radius: 4pt;
+}
+
+.search input {
+  background: rgba(255, 255, 255, 0.116);
+  outline: none;
+  border: none;
+  padding: 10px 20px;
+  width: 70%;
+  max-width: 300px;
+  font-size: 1rem;
+}
+
+.requests {
+  background: rgba(0, 0, 0, 0.226);
+  margin: 5%;
+  border-radius: 5px;
+  padding: 15px;
+  display: grid;
+  grid-gap: 10px;
+  font-size: 1rem;
+}
+
+.requests .row {
+
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  padding: 25px 20px;
+}
+
+.requests .row.last {
+
+  display: flex;
+  justify-content: flex-end;
+}
+
+.requests .block h1 {
+  text-transform: capitalize;
+  font-size: 1.5rem;
+}
+
+.requests .block p {
+
+  font-size: 1rem;
+}
+
+.requests .row.address {
+  grid-template-columns: 40% 60%;
+}
+
+/* Druba CSS */
+
+.requestNoText {
+  opacity: .5;
+  font-weight: 300;
+  font-size: 1rem;
+  margin: 2rem 0;
+  padding: 2rem;
+  text-align: center;
+  border-top: 1pt dashed #ffffff3d;
+  border-bottom: 1pt dashed #ffffff3d;
+}
+
+.novisible {
+  display: none;
+}
+
+.dtxt:disabled {
+  background-color: #00000013;
+}
+
+.btn-transparent {
+  background-color: #00000042;
+}
+
+#searchRes {
+  padding: 1rem 2rem;
+  border-bottom: 1pt dashed #ffffff3d;
+}
+
+#searchRes h4 {
+  font-size: 1.4rem;
+}
+
+#searchRes .requests {
+  margin: 1rem 0;
+}
+
+
+.txt-danger {
+  color: #ff6562;
+}
+
+.txt-warning {
+  color: #d8a61b;
+}
+
+.txt-success {
+  color: #2fb357;
+}
+.dcontainer{
+  padding: 1rem;
+}
